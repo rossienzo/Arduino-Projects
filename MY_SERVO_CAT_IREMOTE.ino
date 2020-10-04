@@ -11,7 +11,7 @@
 // INSTANCIANDO OBJETOS
 Servo myservo;
 IRrecv sensorIR (pinSensor);
-decode_results   comando;
+decode_results comando;
 
 //OBJETO DO TIPO RTC_DS3231
 RTC_DS3231 rtc; 
@@ -42,7 +42,7 @@ void servo(int voltas = 3)
     myservo.attach(servoPin);
     myservo.write(30);
     delay(455); //aqui
-    myservo.write(120); // aqui também
+    myservo.write(120);
     delay(455); //aqui
     myservo.detach();
 
@@ -58,6 +58,7 @@ void btnPress()
 {
   DateTime now = rtc.now(); //CHAMADA DE FUNÇÃO
   int buttonVal = digitalRead(buttonPin);
+  
     if(buttonVal == LOW) {
       
       // salva os dados da última refeição
@@ -99,8 +100,8 @@ void setup(){
   if(rtc.lostPower()){ //SE RTC FOI LIGADO PELA PRIMEIRA VEZ / FICOU SEM ENERGIA / ESGOTOU A BATERIA, FAZ
     Serial.println("DS3231 OK!"); //IMPRIME O TEXTO NO MONITOR SERIAL
     //REMOVA O COMENTÁRIO DE UMA DAS LINHAS ABAIXO PARA INSERIR AS INFORMAÇÕES ATUALIZADAS EM SEU RTC
-    //rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); //CAPTURA A DATA E HORA EM QUE O SKETCH É COMPILADO
-    //rtc.adjust(DateTime(2020, 8, 25, 15, 03, 40)); //(ANO), (MÊS), (DIA), (HORA), (MINUTOS), (SEGUNDOS)
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); //CAPTURA A DATA E HORA EM QUE O SKETCH É COMPILADO
+    rtc.adjust(DateTime(2020, 10, 04, 12, 59, 02)); //(ANO), (MÊS), (DIA), (HORA), (MINUTOS), (SEGUNDOS)
   }
   delay(100); //INTERVALO DE 100 MILISSEGUNDOS
 }
@@ -136,7 +137,7 @@ void loop () {
   {
     if (now.hour() == 12)
     {
-      minFood = 12;
+      hourFood = 12;
       minFood = 0;
     }
     
@@ -178,6 +179,7 @@ void loop () {
   }
   else
   {
+
     if (now.hour() == hourFood && now.minute() == minFood)
     {
       // salva os dados da última refeição
@@ -188,6 +190,7 @@ void loop () {
       minLastFood = now.minute();
       secLastFood = now.second();
 
+      Serial.print("Entrou auqiffffffffff");
       // ejeta a comida
       servo();
 
