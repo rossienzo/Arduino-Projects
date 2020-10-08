@@ -100,8 +100,8 @@ void setup(){
   if(rtc.lostPower()){ //SE RTC FOI LIGADO PELA PRIMEIRA VEZ / FICOU SEM ENERGIA / ESGOTOU A BATERIA, FAZ
     Serial.println("DS3231 OK!"); //IMPRIME O TEXTO NO MONITOR SERIAL
     //REMOVA O COMENTÁRIO DE UMA DAS LINHAS ABAIXO PARA INSERIR AS INFORMAÇÕES ATUALIZADAS EM SEU RTC
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); //CAPTURA A DATA E HORA EM QUE O SKETCH É COMPILADO
-    rtc.adjust(DateTime(2020, 10, 04, 12, 59, 02)); //(ANO), (MÊS), (DIA), (HORA), (MINUTOS), (SEGUNDOS)
+    //rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); //CAPTURA A DATA E HORA EM QUE O SKETCH É COMPILADO
+    //rtc.adjust(DateTime(2020, 10, 07, 16, 31, 02)); //(ANO), (MÊS), (DIA), (HORA), (MINUTOS), (SEGUNDOS)
   }
   delay(100); //INTERVALO DE 100 MILISSEGUNDOS
 }
@@ -212,12 +212,12 @@ void loop () {
     {  
       case (0xFFA25D): // Botão 1
       {
-          servo(1); // apenas 1 voltas 
+          servo(1); // apenas 1 volta 
           break;
       }
       case (0xFF629D): // Botão 2
       {
-          servo(2); // apenas 2 voltas 
+          servo(2); // 2 voltas 
           break;
       }
       case (0xFFE21D): // Botão 3
