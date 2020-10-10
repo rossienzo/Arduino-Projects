@@ -20,6 +20,7 @@ RTC_DS3231 rtc;
 char daysOfTheWeek[7][12] = {"Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"};
 
 const int HORA_PADRAO = 6; // padrão em hora para a refeição
+
 int hourFood = -10; //hora que a comida irá cair
 int minFood = 0; // minuto que a comida irá cair
 
@@ -133,20 +134,40 @@ void loop () {
  * configura o horário da primeira refeição
  * BEGIN IF
  */
+
+ // Define o horário ao ligar pela primeira vez
   if (hourFood == - 10)
-  {
-    if (now.hour() == 12)
+  { 
+    // < 12
+    if (now.hour() < 12) 
     {
-      hourFood = 12;                 // 12h
-      minFood = 0;
+
+      if (now.hour() > 6) 
+      { 
+        hourFood = 6 + HORA_PADRAO;  // 12h
+        minFood = 0;
+      }
+      else
+      {
+        hourFood = HORA_PADRAO;      // 6h
+        minFood = 0;
+      }
     }
     
+    // = 12
+    if (now.hour() == 12)
+    {
+      hourFood = 12 + HORA_PADRAO;                 // 12h
+      minFood = 0;
+    }
+
+    // > 12
     if (now.hour() > 12) 
     {  
       if (now.hour() == 18) 
       {
-        hourFood = 18;               // 18h
-        minFood = now.minute();
+        hourFood = 18 + HORA_PADRAO;               // 18h
+        minFood = 0;
       }
       else if (now.hour() > 18)
       {
@@ -158,20 +179,7 @@ void loop () {
         hourFood = 12 + HORA_PADRAO; // 18h
         minFood = 0;
       }
-    }
-
-    if (now.hour() < 12) {
-
-      if (now.hour() > 6) { 
-        hourFood = 6 + HORA_PADRAO;  // 12h
-        minFood = 0;
-      }
-      else
-      {
-        hourFood = HORA_PADRAO;      // 6h
-        minFood = 0;
-      }
-    } 
+    }   
   } // END IF
 
  /*
@@ -190,6 +198,7 @@ void loop () {
 
     if (now.hour() == hourFood && now.minute() == minFood)
     {
+      /* Futuro upgrade - salva os dados da refeição em um armazenamento
       // salva os dados da última refeição
       monthLastFood = now.month();
       dayLastFood = now.day();
@@ -197,14 +206,15 @@ void loop () {
       hourLastFood = now.hour();
       minLastFood = now.minute();
       secLastFood = now.second();
-
+      */
+      
       // ejeta a comida
       servo();
       Serial.print("Ejetou");
       
       // define o horário da próxima refeição
-      //hourFood = hourFood + HORA_PADRAO;
-      //minFood = now.minute(); 
+      hourFood = hourFood + HORA_PADRAO;
+      minFood = now.minute(); 
     }
   }
 
