@@ -137,7 +137,7 @@ void loop () {
   {
     if (now.hour() == 12)
     {
-      hourFood = 12;
+      hourFood = 12;                 // 12h
       minFood = 0;
     }
     
@@ -145,24 +145,32 @@ void loop () {
     {  
       if (now.hour() == 18) 
       {
-        hourFood = 18;
+        hourFood = 18;               // 18h
         minFood = now.minute();
       }
       else if (now.hour() > 18)
       {
-        hourFood = 18 + HORA_PADRAO;
+        hourFood = 18 + HORA_PADRAO; // 24h
         minFood = 0;
       }
       else 
       {
-        hourFood = 12 + HORA_PADRAO;
+        hourFood = 12 + HORA_PADRAO; // 18h
         minFood = 0;
       }
     }
 
     if (now.hour() < 12) {
-      hourFood = HORA_PADRAO;
-      minFood = 0;
+
+      if (now.hour() > 6) { 
+        hourFood = 6 + HORA_PADRAO;  // 12h
+        minFood = 0;
+      }
+      else
+      {
+        hourFood = HORA_PADRAO;      // 6h
+        minFood = 0;
+      }
     } 
   } // END IF
 
@@ -190,10 +198,10 @@ void loop () {
       minLastFood = now.minute();
       secLastFood = now.second();
 
-      Serial.print("Entrou auqiffffffffff");
       // ejeta a comida
       servo();
-
+      Serial.print("Ejetou");
+      
       // define o horário da próxima refeição
       //hourFood = hourFood + HORA_PADRAO;
       //minFood = now.minute(); 
@@ -201,7 +209,7 @@ void loop () {
   }
 
   // Se o botão for pressionado
-  btnPress(); 
+  //btnPress(); 
 
   // Se algum comando do controle for recebido
   if (sensorIR.decode(&comando)) 
@@ -212,24 +220,26 @@ void loop () {
     {  
       case (0xFFA25D): // Botão 1
       {
-          servo(1); // apenas 1 volta 
+          // apenas 1 volta 
+          servo(1); 
           break;
       }
       case (0xFF629D): // Botão 2
       {
-          servo(2); // 2 voltas 
+          // 2 voltas 
+          servo(2); 
           break;
       }
       case (0xFFE21D): // Botão 3
       {
-          servo();
           // Deu 3 voltas então irá definir o horário da próxima refeição  
+          servo();
           break;
       }
       case (0xFF38C7): // Botão 'OK'
       {
-          servo();
-          // Deu 3 voltas então irá definir o horário da próxima refeição  
+          // Deu 3 voltas então irá definir o horário da próxima refeição
+          servo(); 
           break;
       }
     }    
