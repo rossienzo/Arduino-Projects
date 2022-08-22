@@ -1,5 +1,7 @@
 #include <NewPing.h>
 
+#define ledVm 7
+#define ledAz 6
 #define mic 8
 #define rele 2
 
@@ -26,6 +28,9 @@ boolean ultra(boolean releLigado);
 boolean releAtivado(boolean releLigado);
 
 void setup() {
+  pinMode(ledVm, OUTPUT);
+  pinMode(ledAz, OUTPUT);
+  
   pinMode(mic, INPUT);
   pinMode(rele, OUTPUT); // pino que será acionado pelo arduino
 
@@ -35,6 +40,8 @@ void setup() {
   pinMode(ECHO_PIN, INPUT);
 
   digitalWrite(rele, HIGH); // deixa o rele desativado quando o arduino ligar
+  digitalWrite(ledVm, HIGH); // deixa o led vermelho ligado ao iniciar
+  
   
   Serial.begin(9600); // Open serial monitor at 9600 baud to see ping results.s
 }
@@ -93,9 +100,13 @@ boolean ultra(boolean releLigado) {
 boolean releAtivado(boolean releLigado) {
   if (releLigado) {
     digitalWrite(rele, HIGH);
+    digitalWrite(ledVm, HIGH);
+    digitalWrite(ledAz, LOW);
     releLigado = false;
   } else {
     digitalWrite(rele, LOW);
+    digitalWrite(ledVm, LOW);
+    digitalWrite(ledAz, HIGH);
     releLigado = true;
   }
 
